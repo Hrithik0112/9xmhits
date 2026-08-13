@@ -1,17 +1,28 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Header } from './components/Header'
 import { PlayerBar } from './components/PlayerBar'
-import { SONGS, shuffleSongs, youtubeThumb } from './data/songs'
+import { PlaylistDrawer } from './components/PlaylistDrawer'
+import { SONGS, shuffleSongs, youtubeThumb, type Song } from './data/songs'
 import { useClock } from './hooks/useClock'
 import { useMascotVoice } from './hooks/useMascotVoice'
 import { usePresence } from './hooks/usePresence'
 import { useYouTubePlayer } from './hooks/useYouTubePlayer'
+import { fetchPlaylistFromInput } from './lib/fetchPlaylist'
+
+const DEFAULT_QUEUE_KEY = 'morning-hits'
 
 export default function App() {
-  const playlist = useMemo(() => shuffleSongs(SONGS), [])
+  const defaultPlaylist = useMemo(() => shuffleSongs(SONGS), [])
+  const [playlist, setPlaylist] = useState<Song[]>(defaultPlaylist)
+  const [queueKey, setQueueKey] = useState(DEFAULT_QUEUE_KEY)
+  const [playlistTitle, setPlaylistTitle] = useState('MORNING HITS')
+  const [customLoading, setCustomLoading] = useState(false)
+  const [customError, setCustomError] = useState<string | null>(null)
   const clock = useClock()
   const listeners = usePresence()
+  const [playlistOpen, setPlaylistOpen] = useState(false)
   const remoteSound = useRef<HTMLAudioElement | null>(null)
+  const isCustom = queueKey !== DEFAULT_QUEUE_KEY
 
   const playRemoteClick = useCallback(() => {
     if (!remoteSound.current) {
@@ -27,8 +38,31 @@ export default function App() {
 
   const player = useYouTubePlayer({
     songs: playlist,
+    queueKey,
     onTrackChange: playRemoteClick,
   })
+
+  const loadCustomPlaylist = useCallback(async (url: string) => {
+    setCustomLoading(true)
+    setCustomError(null)
+    try {
+      const result = await fetchPlaylistFromInput(url)
+      setPlaylist(result.songs)
+      setPlaylistTitle('YOUR PLAYLIST')
+      setQueueKey(`custom:${result.id}`)
+    } catch (err) {
+      setCustomError(err instanceof Error ? err.message : 'Could not load playlist')
+    } finally {
+      setCustomLoading(false)
+    }
+  }, [])
+
+  const resetDefaultPlaylist = useCallback(() => {
+    setPlaylist(defaultPlaylist)
+    setPlaylistTitle('MORNING HITS')
+    setQueueKey(DEFAULT_QUEUE_KEY)
+    setCustomError(null)
+  }, [defaultPlaylist])
 
   const mascot = useMascotVoice({
     isPlaying: player.isPlaying,
@@ -149,6 +183,9 @@ export default function App() {
                 onNext={player.next}
                 onSeek={player.seek}
                 onVolume={player.changeVolume}
+                trackCount={playlist.length}
+                playlistLabel={isCustom ? 'songs · your playlist' : 'morning hits · 2001–2016'}
+                onOpenPlaylist={() => setPlaylistOpen(true)}
               />
             </div>
             <a
@@ -163,6 +200,29 @@ export default function App() {
           </div>
         </div>
       )}
+
+      <PlaylistDrawer
+        open={playlistOpen}
+        songs={playlist}
+        currentIndex={player.index}
+        isPlaying={player.isPlaying}
+        playlistTitle={playlistTitle}
+        playlistSubtitle={
+          isCustom
+            ? `${playlist.length} songs · your queue · tap to play`
+            : `${playlist.length} hits · 2001–2016 · tap to play`
+        }
+        isCustom={isCustom}
+        loadingCustom={customLoading}
+        customError={customError}
+        onClose={() => setPlaylistOpen(false)}
+        onSelect={(index) => {
+          player.playAt(index)
+          setPlaylistOpen(false)
+        }}
+        onLoadPlaylist={loadCustomPlaylist}
+        onResetDefault={resetDefaultPlaylist}
+      />
 
       <div className="pointer-events-none absolute -left-[9999px] h-px w-px overflow-hidden opacity-0">
         <div id="yt-audio-player" />

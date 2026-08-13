@@ -64,6 +64,18 @@ declare global {
         startSeconds?: number,
       ): void
       cueVideoById(videoId: string, startSeconds?: number): void
+      cuePlaylist(options: {
+        list: string
+        listType?: string
+        index?: number
+      }): void
+      loadPlaylist(options: {
+        list: string
+        listType?: string
+        index?: number
+      }): void
+      getPlaylist(): string[] | null | undefined
+      getPlaylistIndex(): number
       destroy(): void
     }
   }

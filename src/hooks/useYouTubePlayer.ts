@@ -1,41 +1,27 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Song } from '../data/songs'
+import { loadYouTubeAPI } from '../lib/youtubeApi'
 
 type PlayerStatus = 'idle' | 'ready' | 'playing' | 'paused' | 'buffering'
 
 type UseYouTubePlayerOptions = {
   songs: Song[]
+  /** Bump when the queue is replaced so playback restarts from track 0. */
+  queueKey?: string
   onTrackChange?: () => void
 }
 
-let apiLoadPromise: Promise<void> | null = null
-
-function loadYouTubeAPI(): Promise<void> {
-  if (window.YT?.Player) return Promise.resolve()
-  if (apiLoadPromise) return apiLoadPromise
-
-  apiLoadPromise = new Promise((resolve) => {
-    const previous = window.onYouTubeIframeAPIReady
-    window.onYouTubeIframeAPIReady = () => {
-      previous?.()
-      resolve()
-    }
-
-    if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
-      const tag = document.createElement('script')
-      tag.src = 'https://www.youtube.com/iframe_api'
-      document.head.appendChild(tag)
-    }
-  })
-
-  return apiLoadPromise
-}
-
-export function useYouTubePlayer({ songs, onTrackChange }: UseYouTubePlayerOptions) {
+export function useYouTubePlayer({
+  songs,
+  queueKey = 'default',
+  onTrackChange,
+}: UseYouTubePlayerOptions) {
   const playerRef = useRef<YT.Player | null>(null)
   const indexRef = useRef(0)
   const volumeRef = useRef(80)
+  const songsRef = useRef(songs)
   const onTrackChangeRef = useRef(onTrackChange)
+  const lastQueueKeyRef = useRef(queueKey)
   const [index, setIndex] = useState(0)
   const [status, setStatus] = useState<PlayerStatus>('idle')
   const [currentTime, setCurrentTime] = useState(0)
@@ -48,6 +34,10 @@ export function useYouTubePlayer({ songs, onTrackChange }: UseYouTubePlayerOptio
   }, [onTrackChange])
 
   useEffect(() => {
+    songsRef.current = songs
+  }, [songs])
+
+  useEffect(() => {
     indexRef.current = index
   }, [index])
 
@@ -57,12 +47,12 @@ export function useYouTubePlayer({ songs, onTrackChange }: UseYouTubePlayerOptio
 
     const mount = async () => {
       await loadYouTubeAPI()
-      if (cancelled || !songs[0]) return
+      if (cancelled || !songsRef.current[0]) return
 
       playerRef.current = new window.YT.Player('yt-audio-player', {
         height: 1,
         width: 1,
-        videoId: songs[0].id,
+        videoId: songsRef.current[0].id,
         playerVars: {
           autoplay: 0,
           controls: 0,
@@ -90,19 +80,23 @@ export function useYouTubePlayer({ songs, onTrackChange }: UseYouTubePlayerOptio
             } else if (state === window.YT.PlayerState.BUFFERING) {
               setStatus('buffering')
             } else if (state === window.YT.PlayerState.ENDED) {
-              const next = (indexRef.current + 1) % songs.length
+              const list = songsRef.current
+              if (!list.length) return
+              const next = (indexRef.current + 1) % list.length
               indexRef.current = next
               setIndex(next)
               onTrackChangeRef.current?.()
-              event.target.loadVideoById(songs[next].id)
+              event.target.loadVideoById(list[next]!.id)
             }
           },
           onError: () => {
-            const next = (indexRef.current + 1) % songs.length
+            const list = songsRef.current
+            if (!list.length) return
+            const next = (indexRef.current + 1) % list.length
             indexRef.current = next
             setIndex(next)
             onTrackChangeRef.current?.()
-            playerRef.current?.loadVideoById(songs[next].id)
+            playerRef.current?.loadVideoById(list[next]!.id)
           },
         },
       })
@@ -124,9 +118,39 @@ export function useYouTubePlayer({ songs, onTrackChange }: UseYouTubePlayerOptio
       playerRef.current?.destroy()
       playerRef.current = null
     }
-    // songs identity is stable after shuffle-on-mount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const loadIndex = useCallback((nextIndex: number, autoplay = true) => {
+    const list = songsRef.current
+    if (!list.length) return
+    const normalized = (nextIndex + list.length) % list.length
+    indexRef.current = normalized
+    setIndex(normalized)
+    setCurrentTime(0)
+    onTrackChangeRef.current?.()
+    const player = playerRef.current
+    if (!player) return
+    if (autoplay) {
+      player.loadVideoById(list[normalized]!.id)
+      window.setTimeout(() => player.playVideo(), 50)
+    } else {
+      player.cueVideoById(list[normalized]!.id)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!ready || !songs.length) return
+    if (lastQueueKeyRef.current === queueKey) return
+    lastQueueKeyRef.current = queueKey
+    indexRef.current = 0
+    setIndex(0)
+    setCurrentTime(0)
+    onTrackChangeRef.current?.()
+    const player = playerRef.current
+    if (!player) return
+    player.loadVideoById(songs[0]!.id)
+    window.setTimeout(() => player.playVideo(), 50)
+  }, [queueKey, ready, songs])
 
   const play = useCallback(() => {
     playerRef.current?.playVideo()
@@ -146,26 +170,6 @@ export function useYouTubePlayer({ songs, onTrackChange }: UseYouTubePlayerOptio
       player.playVideo()
     }
   }, [])
-
-  const loadIndex = useCallback(
-    (nextIndex: number, autoplay = true) => {
-      if (!songs.length) return
-      const normalized = (nextIndex + songs.length) % songs.length
-      indexRef.current = normalized
-      setIndex(normalized)
-      setCurrentTime(0)
-      onTrackChangeRef.current?.()
-      const player = playerRef.current
-      if (!player) return
-      if (autoplay) {
-        player.loadVideoById(songs[normalized].id)
-        window.setTimeout(() => player.playVideo(), 50)
-      } else {
-        player.cueVideoById(songs[normalized].id)
-      }
-    },
-    [songs],
-  )
 
   const next = useCallback(() => {
     loadIndex(indexRef.current + 1)
@@ -192,8 +196,15 @@ export function useYouTubePlayer({ songs, onTrackChange }: UseYouTubePlayerOptio
     playerRef.current?.setVolume(clamped)
   }, [])
 
+  const playAt = useCallback(
+    (nextIndex: number) => {
+      loadIndex(nextIndex, true)
+    },
+    [loadIndex],
+  )
+
   return {
-    song: songs[index],
+    song: songs[index] ?? songs[0],
     index,
     status,
     ready,
@@ -206,6 +217,7 @@ export function useYouTubePlayer({ songs, onTrackChange }: UseYouTubePlayerOptio
     toggle,
     next,
     prev,
+    playAt,
     seek,
     changeVolume,
   }

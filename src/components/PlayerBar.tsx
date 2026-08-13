@@ -8,6 +8,8 @@ type PlayerBarProps = {
   currentTime: number
   duration: number
   volume: number
+  trackCount?: number
+  playlistLabel?: string
   /** When true, render just the glass bar (parent handles positioning). */
   embedded?: boolean
   onToggle: () => void
@@ -15,6 +17,7 @@ type PlayerBarProps = {
   onNext: () => void
   onSeek: (seconds: number) => void
   onVolume: (value: number) => void
+  onOpenPlaylist?: () => void
 }
 
 export function PlayerBar({
@@ -25,12 +28,15 @@ export function PlayerBar({
   currentTime,
   duration,
   volume,
+  trackCount,
+  playlistLabel = 'morning hits · 2001–2016',
   embedded = false,
   onToggle,
   onPrev,
   onNext,
   onSeek,
   onVolume,
+  onOpenPlaylist,
 }: PlayerBarProps) {
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0
 
@@ -140,6 +146,31 @@ export function PlayerBar({
             {formatTime(duration)}
           </span>
         </div>
+
+        {onOpenPlaylist ? (
+          <button
+            type="button"
+            onClick={onOpenPlaylist}
+            className="playlist-cta flex w-full items-center justify-between gap-3 rounded-xl border border-[#f2d7a8]/40 bg-[#f2d7a8]/12 px-3 py-2 text-left transition hover:border-[#f2d7a8]/65 hover:bg-[#f2d7a8]/2 active:scale-[0.99] sm:px-3.5 sm:py-2.5"
+          >
+            <span className="flex min-w-0 items-center gap-2.5">
+              <span className="grid size-8 shrink-0 place-items-center rounded-full bg-[#f2d7a8]/25 text-[#f2d7a8]">
+                <QueueIcon />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-[12px] font-semibold text-[#f6e4c4] sm:text-[13px]">
+                  Browse playlist
+                </span>
+                <span className="block text-[10px] text-white/55 sm:text-[11px]">
+                  {trackCount ?? 0} {playlistLabel}
+                </span>
+              </span>
+            </span>
+            <span className="shrink-0 text-[11px] font-medium tracking-wide text-[#f2d7a8]">
+              Open →
+            </span>
+          </button>
+        ) : null}
       </div>
     </div>
   )
@@ -189,6 +220,14 @@ function VolumeIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden className="text-white/70">
       <path d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06A7.98 7.98 0 0 1 19 12a7.98 7.98 0 0 1-5 6.71v2.06c4.01-1.14 7-4.82 7-8.77s-2.99-7.63-7-8.77z" />
+    </svg>
+  )
+}
+
+function QueueIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M4 6h12v2H4V6zm0 5h12v2H4v-2zm0 5h8v2H4v-2zm13-1.5v-3h2v3h3v2h-3v3h-2v-3h-3v-2h3z" />
     </svg>
   )
 }

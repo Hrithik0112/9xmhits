@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { MASCOT_CLIPS } from '../data/mascotClips'
+import { loadYouTubeAPI } from '../lib/youtubeApi'
 
 type DuckControls = {
   isPlaying: boolean
@@ -7,29 +8,6 @@ type DuckControls = {
   pause: () => void
   play: () => void
   changeVolume: (value: number) => void
-}
-
-let apiLoadPromise: Promise<void> | null = null
-
-function loadYouTubeAPI(): Promise<void> {
-  if (window.YT?.Player) return Promise.resolve()
-  if (apiLoadPromise) return apiLoadPromise
-
-  apiLoadPromise = new Promise((resolve) => {
-    const previous = window.onYouTubeIframeAPIReady
-    window.onYouTubeIframeAPIReady = () => {
-      previous?.()
-      resolve()
-    }
-
-    if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
-      const tag = document.createElement('script')
-      tag.src = 'https://www.youtube.com/iframe_api'
-      document.head.appendChild(tag)
-    }
-  })
-
-  return apiLoadPromise
 }
 
 function pickClip(excludeId?: string) {

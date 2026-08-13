@@ -8,6 +8,8 @@ type PlayerBarProps = {
   currentTime: number
   duration: number
   volume: number
+  /** When true, render just the glass bar (parent handles positioning). */
+  embedded?: boolean
   onToggle: () => void
   onPrev: () => void
   onNext: () => void
@@ -23,6 +25,7 @@ export function PlayerBar({
   currentTime,
   duration,
   volume,
+  embedded = false,
   onToggle,
   onPrev,
   onNext,
@@ -31,8 +34,7 @@ export function PlayerBar({
 }: PlayerBarProps) {
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0
 
-  return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex justify-center px-3 pb-4 sm:pb-6">
+  const bar = (
       <div className="pointer-events-auto flex w-full max-w-[540px] items-center gap-3 rounded-[28px] border border-white/10 bg-glass px-3 py-3 shadow-[0_16px_50px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:gap-4 sm:px-4">
         <div className="relative shrink-0">
           <img
@@ -110,6 +112,13 @@ export function PlayerBar({
           </button>
         </div>
       </div>
+  )
+
+  if (embedded) return bar
+
+  return (
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex justify-center px-3 pb-4 sm:pb-6">
+      {bar}
     </div>
   )
 }

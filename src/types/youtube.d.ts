@@ -53,7 +53,16 @@ declare global {
       getCurrentTime(): number
       getDuration(): number
       getPlayerState(): PlayerState
-      loadVideoById(videoId: string, startSeconds?: number): void
+      loadVideoById(
+        videoIdOrOptions:
+          | string
+          | {
+              videoId: string
+              startSeconds?: number
+              endSeconds?: number
+            },
+        startSeconds?: number,
+      ): void
       cueVideoById(videoId: string, startSeconds?: number): void
       destroy(): void
     }

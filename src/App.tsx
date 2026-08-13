@@ -3,6 +3,7 @@ import { Header } from './components/Header'
 import { PlayerBar } from './components/PlayerBar'
 import { SONGS, shuffleSongs, youtubeThumb } from './data/songs'
 import { useClock } from './hooks/useClock'
+import { useMascotVoice } from './hooks/useMascotVoice'
 import { usePresence } from './hooks/usePresence'
 import { useYouTubePlayer } from './hooks/useYouTubePlayer'
 
@@ -27,6 +28,14 @@ export default function App() {
   const player = useYouTubePlayer({
     songs: playlist,
     onTrackChange: playRemoteClick,
+  })
+
+  const mascot = useMascotVoice({
+    isPlaying: player.isPlaying,
+    volume: player.volume,
+    pause: player.pause,
+    play: player.play,
+    changeVolume: player.changeVolume,
   })
 
   const { toggle, next, prev } = player
@@ -90,17 +99,42 @@ export default function App() {
         />
       </div>
 
-      {/* Mascots standing on the player */}
-      {player.song && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex justify-center px-3 pb-4 sm:pb-6">
-          <div className="relative w-full max-w-[540px]">
+      {/* Bottom-left: mascots standing on the page edge */}
+      <div className="pointer-events-none absolute bottom-0 left-2 z-30 sm:left-4 md:left-6">
+        <div className="group pointer-events-auto relative flex flex-col items-center">
+          <span
+            className={`mascot-hint pointer-events-none absolute bottom-[calc(100%+0.25rem)] left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-md border border-[#f2d7a8]/35 bg-black/70 px-2.5 py-1 text-[11px] font-medium tracking-wide text-[#f2d7a8] shadow-[0_6px_18px_rgba(0,0,0,0.4)] backdrop-blur-md transition duration-200 sm:text-xs ${
+              mascot.speaking
+                ? 'translate-y-0 opacity-100'
+                : 'translate-y-1 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100'
+            }`}
+          >
+            {mascot.speaking ? 'Bakwaas on…' : 'Click for Bade Chote jokes'}
+          </span>
+
+          <button
+            type="button"
+            onClick={mascot.speak}
+            aria-label="Play Bade and Chote jokes"
+            className={`relative cursor-pointer border-0 bg-transparent p-0 outline-none transition hover:brightness-110 focus-visible:ring-2 focus-visible:ring-[#f2d7a8]/45 ${
+              mascot.speaking ? 'mascot-talking' : 'mascot-float'
+            }`}
+          >
             <img
               src="/mascot.png"
-              alt="Bade and Chote"
-              className="mascot-float pointer-events-none absolute bottom-[calc(100%-18px)] left-1/2 z-[5] h-[5.75rem] w-auto -translate-x-1/2 select-none drop-shadow-[0_8px_18px_rgba(0,0,0,0.4)] sm:bottom-[calc(100%-22px)] sm:h-28 md:h-32"
+              alt=""
+              className="h-28 w-auto select-none drop-shadow-[0_12px_22px_rgba(0,0,0,0.5)] sm:h-36 md:h-44"
               draggable={false}
             />
-            <div className="pointer-events-auto relative z-20">
+          </button>
+        </div>
+      </div>
+
+      {/* Bottom player */}
+      {player.song && (
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex justify-center px-3 pb-3 sm:pb-4">
+          <div className="relative flex w-full max-w-[540px] flex-col items-center">
+            <div className="pointer-events-auto relative z-20 w-full">
               <PlayerBar
                 embedded
                 title={player.song.title}
@@ -117,12 +151,22 @@ export default function App() {
                 onVolume={player.changeVolume}
               />
             </div>
+            <a
+              href="https://www.hrithikdutta.me/"
+              target="_blank"
+              rel="noreferrer"
+              className="pointer-events-auto relative z-30 mt-2.5 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-black/55 px-3.5 py-1.5 text-[13px] font-medium text-foam shadow-[0_6px_20px_rgba(0,0,0,0.35)] backdrop-blur-md transition hover:border-white/40 hover:bg-black/70 hover:text-white sm:mt-3 sm:px-4 sm:text-sm"
+            >
+              Built by <span className="font-semibold underline decoration-white/50 underline-offset-[3px]">Hrithik</span>
+              <span aria-hidden className="text-foam/70">↗</span>
+            </a>
           </div>
         </div>
       )}
 
       <div className="pointer-events-none absolute -left-[9999px] h-px w-px overflow-hidden opacity-0">
         <div id="yt-audio-player" />
+        <div id="yt-mascot-player" />
       </div>
     </main>
   )

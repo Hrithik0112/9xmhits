@@ -8,19 +8,27 @@ type HeaderProps = {
 export function Header({ clock, listeners }: HeaderProps) {
   return (
     <header className="pointer-events-none absolute inset-x-0 top-0 z-20 px-4 pt-4 text-sm text-foam sm:px-6 sm:pt-5">
-      <div className="pointer-events-auto flex items-center gap-3 drop-shadow-[0_1px_2px_rgba(0,0,0,0.85)] sm:gap-4">
-        <time className="tabular-nums font-medium tracking-wide">{clock}</time>
-        <a
-          href={PLAYLIST_LINKS.youtubeMusic}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex items-center gap-1.5 text-[13px] font-medium transition hover:opacity-90"
-          aria-label="Open on YouTube Music"
-        >
-          <YTMusicIcon />
-          <span className="hidden sm:inline">YT Music</span>
-          <span aria-hidden>↗</span>
-        </a>
+      <div className="pointer-events-auto flex flex-col items-start gap-2">
+        <div className="flex items-center gap-3 drop-shadow-[0_1px_2px_rgba(0,0,0,0.85)] sm:gap-4">
+          <time className="tabular-nums font-medium tracking-wide">{clock}</time>
+          <a
+            href={PLAYLIST_LINKS.youtubeMusic}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 text-[13px] font-medium transition hover:opacity-90"
+            aria-label="Open on YouTube Music"
+          >
+            <YTMusicIcon />
+            <span className="hidden sm:inline">YT Music</span>
+            <span aria-hidden>↗</span>
+          </a>
+        </div>
+
+        <div className="inline-flex items-center gap-2 rounded-full border border-[#f0d2a0]/35 bg-black/40 px-2.5 py-1 text-[11px] font-medium text-[#f6e4c4] shadow-[0_4px_14px_rgba(0,0,0,0.28)] backdrop-blur-sm sm:text-xs">
+          <span className="font-display tracking-[0.14em] text-[#f0d2a0]">6 – 10 AM</span>
+          <span className="h-3 w-px bg-[#f0d2a0]/35" aria-hidden />
+          <span className="text-foam/90">Best in the morning</span>
+        </div>
       </div>
 
       <div className="pointer-events-auto absolute left-1/2 top-4 flex -translate-x-1/2 items-center gap-2 rounded-full bg-black/25 px-3 py-1.5 backdrop-blur-sm sm:top-5">

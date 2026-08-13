@@ -1,8 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;500;700&display=swap");
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bebas Neue", "Roboto", ui-sans-serif, system-ui, sans-serif;
   --color-ink: #0a0a0a;
   --color-foam: #ededed;
   --color-muted: rgba(237, 237, 237, 0.65);
@@ -55,6 +56,20 @@ body {
 
 .spin-art.paused {
   animation-play-state: paused;
+}
+
+@keyframes mascot-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.mascot-float {
+  animation: mascot-float 3.6s ease-in-out infinite;
 }
 
 input[type='range'].seek-range::-webkit-slider-thumb {

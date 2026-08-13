@@ -7,27 +7,26 @@ type HeaderProps = {
 
 export function Header({ clock, listeners }: HeaderProps) {
   return (
-    <header className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-start justify-between px-4 pt-4 text-sm text-foam sm:px-6 sm:pt-5">
-      <time className="pointer-events-auto tabular-nums tracking-wide opacity-90">{clock}</time>
-
-      <div className="pointer-events-auto flex items-center gap-2 rounded-full bg-black/25 px-3 py-1.5 backdrop-blur-sm">
-        <span className="pulse-dot inline-block size-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-        <span className="tabular-nums font-medium">{listeners} online</span>
-      </div>
-
-      <nav className="pointer-events-auto flex items-center gap-3 text-[13px] font-medium">
+    <header className="pointer-events-none absolute inset-x-0 top-0 z-20 px-4 pt-4 text-sm text-foam sm:px-6 sm:pt-5">
+      <div className="pointer-events-auto flex items-center gap-3 drop-shadow-[0_1px_2px_rgba(0,0,0,0.85)] sm:gap-4">
+        <time className="tabular-nums font-medium tracking-wide">{clock}</time>
         <a
           href={PLAYLIST_LINKS.youtubeMusic}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-1.5 opacity-90 transition hover:opacity-100"
+          className="inline-flex items-center gap-1.5 text-[13px] font-medium transition hover:opacity-90"
           aria-label="Open on YouTube Music"
         >
           <YTMusicIcon />
           <span className="hidden sm:inline">YT Music</span>
           <span aria-hidden>↗</span>
         </a>
-      </nav>
+      </div>
+
+      <div className="pointer-events-auto absolute left-1/2 top-4 flex -translate-x-1/2 items-center gap-2 rounded-full bg-black/25 px-3 py-1.5 backdrop-blur-sm sm:top-5">
+        <span className="pulse-dot inline-block size-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+        <span className="tabular-nums font-medium">{listeners} online</span>
+      </div>
     </header>
   )
 }

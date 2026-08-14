@@ -1,31 +1,206 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.svg?v=20" type="image/svg+xml" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>9XM Morning Hits</title>
+
+    <!-- Primary SEO -->
+    <title>9XM Morning Hits — Free Bollywood Nostalgia Web Radio (2000s–2010s)</title>
     <meta
       name="description"
-      content="The Bollywood bangers that woke up a generation. Nostalgia web radio of 9XM morning hits."
+      content="Stream free 9XM-style morning hits online — classic Bollywood bangers from the 2000s & 2010s. Kal Ho Naa Ho, Jab We Met, YJHD & more. Best between 6–10 AM."
     />
+    <meta
+      name="keywords"
+      content="9XM morning hits, 9XM hits, Bollywood morning songs, 2000s Bollywood hits, nostalgia radio, Bollywood web radio, Kal Ho Naa Ho, Yeh Jawaani Hai Deewani, Jab We Met songs, morning Bollywood playlist"
+    />
+    <meta name="author" content="Hrithik Dutta" />
+    <meta name="creator" content="Hrithik Dutta" />
+    <meta name="publisher" content="9XM Morning Hits" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="bingbot" content="index, follow" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="application-name" content="9XM Morning Hits" />
+    <meta name="apple-mobile-web-app-title" content="9XM Hits" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="geo.region" content="IN" />
+    <meta name="geo.placename" content="India" />
+    <meta name="rating" content="general" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <!-- Canonical & hreflang (update domain via VITE_SITE_URL / sitemap) -->
+    <link rel="canonical" href="https://9xmhits.pages.dev/" />
+    <link rel="alternate" hreflang="en-IN" href="https://9xmhits.pages.dev/" />
+    <link rel="alternate" hreflang="en" href="https://9xmhits.pages.dev/" />
+    <link rel="alternate" hreflang="x-default" href="https://9xmhits.pages.dev/" />
+
+    <!-- Icons & PWA -->
+    <link rel="icon" href="/favicon.svg?v=20" type="image/svg+xml" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+    <!-- Performance: LCP + origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://i.ytimg.com" />
+    <link rel="preconnect" href="https://www.youtube.com" />
+    <link rel="dns-prefetch" href="https://www.youtube.com" />
+    <link rel="preload" as="image" href="/bg-website.avif?v=3" fetchpriority="high" />
+    <link rel="preload" as="image" href="/9xm-logo.png?v=2" />
+
+    <!-- Open Graph (absolute URLs required for social crawlers) -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="9XM Morning Hits" />
+    <meta property="og:site_name" content="9XM Morning Hits" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:url" content="https://9xmhits.pages.dev/" />
+    <meta
+      property="og:title"
+      content="9XM Morning Hits — Free Bollywood Nostalgia Web Radio"
+    />
     <meta
       property="og:description"
-      content="The Bollywood bangers that woke up a generation."
+      content="The Bollywood bangers that woke up a generation. Stream 2000s–2010s morning hits free online."
     />
-    <meta property="og:image" content="/bg-website.avif?v=3" />
+    <meta property="og:image" content="https://9xmhits.pages.dev/og-image.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="9XM Morning Hits nostalgia web radio — Bollywood morning songs"
+    />
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="9XM Morning Hits" />
+    <meta
+      name="twitter:title"
+      content="9XM Morning Hits — Free Bollywood Nostalgia Web Radio"
+    />
     <meta
       name="twitter:description"
-      content="The Bollywood bangers that woke up a generation."
+      content="The Bollywood bangers that woke up a generation. Stream classic morning hits free online."
     />
-    <meta name="twitter:image" content="/bg-website.avif?v=3" />
-    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="twitter:image" content="https://9xmhits.pages.dev/og-image.jpg" />
+    <meta name="twitter:image:alt" content="9XM Morning Hits web radio" />
+
+    <!-- Structured data: WebSite + WebApplication + MusicPlaylist + FAQ -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://9xmhits.pages.dev/#website",
+            "url": "https://9xmhits.pages.dev/",
+            "name": "9XM Morning Hits",
+            "alternateName": ["9XM Hits", "9XM Morning Hits Radio"],
+            "description": "Free nostalgia web radio of 9XM-style Bollywood morning hits from the 2000s and 2010s.",
+            "inLanguage": "en-IN",
+            "publisher": { "@id": "https://9xmhits.pages.dev/#person" }
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://9xmhits.pages.dev/#app",
+            "name": "9XM Morning Hits",
+            "url": "https://9xmhits.pages.dev/",
+            "applicationCategory": "MultimediaApplication",
+            "operatingSystem": "Any",
+            "browserRequirements": "Requires JavaScript and HTML5",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "INR"
+            },
+            "description": "Play free Bollywood nostalgia morning hits inspired by 9XM — 50 classic songs from 2001–2016.",
+            "image": "https://9xmhits.pages.dev/og-image.jpg",
+            "author": { "@id": "https://9xmhits.pages.dev/#person" }
+          },
+          {
+            "@type": "MusicPlaylist",
+            "@id": "https://9xmhits.pages.dev/#playlist",
+            "name": "9XM Morning Hits Playlist",
+            "numTracks": 50,
+            "description": "Curated Bollywood morning hits spanning early 2000s to mid-2010s — Dil Chahta Hai, Kal Ho Naa Ho, Jab We Met, Yeh Jawaani Hai Deewani and more.",
+            "genre": ["Bollywood", "Hindi Pop", "Filmi"]
+          },
+          {
+            "@type": "Person",
+            "@id": "https://9xmhits.pages.dev/#person",
+            "name": "Hrithik Dutta",
+            "url": "https://www.hrithikdutta.me/"
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://9xmhits.pages.dev/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What is 9XM Morning Hits?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "9XM Morning Hits is a free nostalgia web radio that streams classic Bollywood songs in the spirit of 9XM morning TV — especially hits from the 2000s and 2010s."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "When is the best time to listen?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The vibe peaks between 6 AM and 10 AM, just like the original morning hits slots — but you can stream anytime."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is 9XM Morning Hits free?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. The web radio is free to use in your browser. You can also paste your own YouTube Music playlist link to listen."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What songs are on the playlist?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Around 50 Bollywood classics such as Kal Ho Naa Ho, Mauja Hi Mauja, Desi Girl, Badtameez Dil, Tumhi Ho Bandhu, Ilahi, London Thumakda and more from 2001–2016."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
+    <!-- Crawler-visible content (SPA mounts into #root). Keep for non-JS / early indexing. -->
+    <noscript>
+      <main>
+        <h1>9XM Morning Hits — Free Bollywood Nostalgia Web Radio</h1>
+        <p>
+          Stream the Bollywood bangers that woke up a generation. A free online
+          nostalgia radio inspired by 9XM morning hits — classic Hindi film songs
+          from the early 2000s through the mid-2010s.
+        </p>
+        <p>Best between 6 AM and 10 AM. JavaScript is required to play audio.</p>
+        <h2>Featured morning hits</h2>
+        <ul>
+          <li>Kal Ho Naa Ho (2003)</li>
+          <li>Wo Ladki Hai Kahan — Dil Chahta Hai (2001)</li>
+          <li>Mauja Hi Mauja — Jab We Met (2007)</li>
+          <li>Desi Girl — Dostana (2008)</li>
+          <li>Badtameez Dil — Yeh Jawaani Hai Deewani (2013)</li>
+          <li>Tumhi Ho Bandhu — Cocktail (2012)</li>
+          <li>Ilahi — Yeh Jawaani Hai Deewani (2013)</li>
+          <li>London Thumakda — Queen (2014)</li>
+        </ul>
+        <p>Built by <a href="https://www.hrithikdutta.me/">Hrithik Dutta</a>.</p>
+      </main>
+    </noscript>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

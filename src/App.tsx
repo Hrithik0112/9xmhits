@@ -114,17 +114,45 @@ export default function App() {
 
       <Header clock={clock} listeners={listeners} />
 
+      {/* Indexable copy for search / assistive tech (visually hidden) */}
+      <section className="sr-only" aria-label="About 9XM Morning Hits">
+        <h1>9XM Morning Hits — Free Bollywood Nostalgia Web Radio</h1>
+        <p>
+          Stream free 9XM-style morning hits online: classic Bollywood songs from
+          the 2000s and 2010s. The Bollywood bangers that woke up a generation —
+          best between 6 AM and 10 AM.
+        </p>
+        <h2>Morning hits playlist highlights</h2>
+        <ul>
+          {SONGS.slice(0, 24).map((song) => (
+            <li key={song.id}>
+              {song.title}
+              {song.movie ? ` — ${song.movie}` : ''}
+              {song.year > 0 ? ` (${song.year})` : ''}
+            </li>
+          ))}
+        </ul>
+        <p>
+          Built by{' '}
+          <a href="https://www.hrithikdutta.me/">Hrithik Dutta</a>. Paste your own
+          YouTube Music playlist to listen inside the player.
+        </p>
+      </section>
+
       {/* Top-right brand lockup */}
       <div className="pointer-events-none absolute right-4 top-[3.25rem] z-20 flex w-[min(48vw,15.5rem)] flex-col items-end text-right sm:right-7 sm:top-5 sm:w-[18rem] md:right-8 md:w-[20rem]">
-        <h1 className="m-0">
+        <p className="m-0" aria-hidden>
           <img
             src="/9xm-logo.png?v=2"
-            alt="9XM"
+            alt=""
             className="ml-auto h-11 w-auto select-none drop-shadow-[0_4px_16px_rgba(0,0,0,0.45)] sm:h-[3.35rem] md:h-16"
             draggable={false}
           />
-        </h1>
-        <p className="font-display mt-2.5 select-none text-[1.85rem] leading-none tracking-[0.12em] text-foam drop-shadow-[0_2px_14px_rgba(0,0,0,0.55)] sm:mt-3 sm:text-[2.35rem] md:text-[2.75rem]">
+        </p>
+        <p
+          className="font-display mt-2.5 select-none text-[1.85rem] leading-none tracking-[0.12em] text-foam drop-shadow-[0_2px_14px_rgba(0,0,0,0.55)] sm:mt-3 sm:text-[2.35rem] md:text-[2.75rem]"
+          aria-hidden
+        >
           MORNING HITS
         </p>
         <span

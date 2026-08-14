@@ -1,2 +1,0 @@
-# SPA fallback for client routes (static files still win when they exist)
-/*    /index.html   200

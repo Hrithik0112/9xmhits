@@ -1,0 +1,26 @@
+# 9XM Morning Hits
+
+> Free nostalgia web radio streaming classic Bollywood morning hits from the 2000s and 2010s, inspired by 9XM TV morning slots.
+
+## Site
+- URL: https://9xmhits.pages.dev/
+- Type: Single-page web radio / music player
+- Language: English (India), Hindi film music
+
+## What it is
+9XM Morning Hits lets listeners stream a curated playlist of ~50 Bollywood songs that defined morning TV nostalgia — Dil Chahta Hai, Kal Ho Naa Ho, Jab We Met, Yeh Jawaani Hai Deewani, Cocktail, Queen, and more. Best experienced between 6–10 AM. Includes Bade & Chote mascot jokes and optional custom YouTube Music playlists.
+
+## Key entities
+- Brand inspiration: 9XM (Indian music channel)
+- Mascots: Bade and Chote (Bakwaas Bandh Kar)
+- Creator: Hrithik Dutta (https://www.hrithikdutta.me/)
+
+## Sample tracks
+- Kal Ho Naa Ho (2003)
+- Mauja Hi Mauja — Jab We Met (2007)
+- Desi Girl — Dostana (2008)
+- Badtameez Dil — Yeh Jawaani Hai Deewani (2013)
+- London Thumakda — Queen (2014)
+
+## Contact / credit
+Built by Hrithik Dutta — https://www.hrithikdutta.me/

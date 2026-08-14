@@ -1,0 +1,20 @@
+{
+  "name": "9XM Morning Hits",
+  "short_name": "9XM Hits",
+  "description": "Free Bollywood nostalgia web radio — classic 2000s–2010s morning hits.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "lang": "en-IN",
+  "categories": ["music", "entertainment"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

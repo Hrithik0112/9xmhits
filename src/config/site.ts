@@ -1,6 +1,6 @@
 /** Canonical site config for SEO / social / sitemap. Override with VITE_SITE_URL. */
 export const SITE_URL = (
-  import.meta.env.VITE_SITE_URL || 'https://9xmhits.pages.dev'
+  import.meta.env.VITE_SITE_URL || 'https://9xmhits.workers.dev'
 ).replace(/\/$/, '')
 
 export const SITE = {

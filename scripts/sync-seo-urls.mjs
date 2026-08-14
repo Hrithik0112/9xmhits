@@ -7,7 +7,7 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 const root = resolve(import.meta.dirname, '..')
-const site = (process.env.VITE_SITE_URL || 'https://9xmhits.pages.dev').replace(
+const site = (process.env.VITE_SITE_URL || 'https://9xmhits.workers.dev').replace(
   /\/$/,
   '',
 )
@@ -19,8 +19,8 @@ const files = [
   'public/llms.txt',
 ]
 
-// Match Cloudflare placeholder (and old Vercel URLs if any remain)
-const pattern = /https:\/\/9xmhits\.(pages\.dev|vercel\.app)/g
+// Match placeholders used in this repo
+const pattern = /https:\/\/9xmhits\.(workers\.dev|pages\.dev|vercel\.app)/g
 
 for (const rel of files) {
   const path = resolve(root, rel)

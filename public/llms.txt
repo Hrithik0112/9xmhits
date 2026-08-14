@@ -3,7 +3,7 @@
 > Free nostalgia web radio streaming classic Bollywood morning hits from the 2000s and 2010s, inspired by 9XM TV morning slots.
 
 ## Site
-- URL: https://9xmhits.pages.dev/
+- URL: https://9xmhits.workers.dev/
 - Type: Single-page web radio / music player
 - Language: English (India), Hindi film music
 
